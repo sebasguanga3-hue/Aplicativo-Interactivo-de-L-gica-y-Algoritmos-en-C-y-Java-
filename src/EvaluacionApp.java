@@ -1,4 +1,5 @@
-@@ -0,0 +1,238 @@
+package src;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -139,4 +140,101 @@ public class EvaluacionApp {
         System.out.println("\nRegistro de notas completado.");
     }
 
+    // Parte 4 — Guardar resultados en archivo
+    public static void guardarResultados() {
+        if (operacionRealizada) {
+            // Guardar solo operación matemática
+            guardarOperacion(operacionGuardar);
+            operacionRealizada = false; // reseteamos para próxima operación
+        } else if (notasRegistradas) {
+            // Guardar solo notas y promedios
+            double promedioGeneral = 0;
+            double notaMayor = -1;
+            double notaMenor = 11;
+            int totalAprobados = 0;
+            int totalReprobados = 0;
+
+            for (int i = 0; i < numEstudiantes; i++) {
+                promedioGeneral += promedios[i];
+                if (promedios[i] > notaMayor) notaMayor = promedios[i];
+                if (promedios[i] < notaMenor) notaMenor = promedios[i];
+                if (promedios[i] >= 7) totalAprobados++;
+                else totalReprobados++;
+            }
+
+            promedioGeneral /= numEstudiantes;
+
+            // Mostrar resumen final
+            System.out.println("\n--- RESUMEN FINAL ---");
+            for (int e = 0; e < numEstudiantes; e++) {
+                System.out.print("Estudiante: " + nombres[e] + " | Notas: ");
+                for (double n : todasNotas[e]) System.out.print(n + " ");
+                System.out.println("| Promedio: " + promedios[e]);
+            }
+
+            System.out.println("\nPromedio general de todos los estudiantes: " + promedioGeneral);
+            System.out.println("Nota mayor global (promedio): " + notaMayor);
+            System.out.println("Nota menor global (promedio): " + notaMenor);
+            System.out.println("Cantidad de estudiantes aprobados: " + totalAprobados);
+            System.out.println("Cantidad de estudiantes reprobados: " + totalReprobados);
+
+            // Guardar en archivo
+            guardarResultadosArchivo(nombres, todasNotas, promedios, promedioGeneral,
+                    notaMayor, notaMenor, totalAprobados, totalReprobados);
+
+            notasRegistradas = false; // reseteamos para no guardar de nuevo
+        } else {
+            System.out.println("No hay resultados para guardar.");
+        }
+    }
+
+    public static void guardarOperacion(String operacion) {
+        try {
+            FileWriter archivo = new FileWriter("resultados.txt", true);
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+            LocalDateTime ahora = LocalDateTime.now();
+
+            archivo.write("--- OPERACION BASICA ---\n");
+            archivo.write(operacion + "\n");
+            archivo.write("Fecha: " + dtf.format(ahora) + "\n");
+            archivo.write("Lenguaje: Java\n");
+            archivo.write("---------------------------\n");
+
+            archivo.close();
+            System.out.println("Operación guardada correctamente en resultados.txt.");
+        } catch (IOException e) {
+            System.out.println("Error al guardar la operación: " + e.getMessage());
+        }
+    }
+
+    public static void guardarResultadosArchivo(String[] nombres, double[][] todasNotas, double[] promedios,
+                                                double promedioGeneral, double notaMayor, double notaMenor,
+                                                int totalAprobados, int totalReprobados) {
+        try {
+            FileWriter archivo = new FileWriter("resultados.txt", true);
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+            LocalDateTime ahora = LocalDateTime.now();
+
+            archivo.write("--- RESUMEN FINAL ---\n");
+            for (int e = 0; e < nombres.length; e++) {
+                archivo.write("Estudiante: " + nombres[e] + " | Notas: ");
+                for (double n : todasNotas[e]) archivo.write(n + " ");
+                archivo.write("| Promedio: " + promedios[e] + "\n");
+            }
+
+            archivo.write("\nPromedio general de todos los estudiantes: " + promedioGeneral + "\n");
+            archivo.write("Nota mayor global (promedio): " + notaMayor + "\n");
+            archivo.write("Nota menor global (promedio): " + notaMenor + "\n");
+            archivo.write("Cantidad de estudiantes aprobados: " + totalAprobados + "\n");
+            archivo.write("Cantidad de estudiantes reprobados: " + totalReprobados + "\n");
+            archivo.write("Fecha: " + dtf.format(ahora) + "\n");
+            archivo.write("Lenguaje: Java\n");
+            archivo.write("---------------------------\n");
+
+            archivo.close();
+            System.out.println("Resultados guardados correctamente en resultados.txt.");
+        } catch (IOException e) {
+            System.out.println("Error al guardar el archivo: " + e.getMessage());
+        }
+    }
 }
