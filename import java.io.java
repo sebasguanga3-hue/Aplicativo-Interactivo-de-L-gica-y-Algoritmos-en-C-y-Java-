@@ -100,4 +100,43 @@ public class EvaluacionApp {
 
         operacionRealizada = true;
     }
+
+    // Parte 3 — Registro de notas y cálculo de promedios
+    public static void registroNotas() {
+        System.out.print("Ingrese el número de estudiantes a registrar: ");
+        numEstudiantes = sc.nextInt();
+        sc.nextLine(); // limpiar buffer
+
+        nombres = new String[numEstudiantes];
+        todasNotas = new double[numEstudiantes][5];
+        promedios = new double[numEstudiantes];
+
+        for (int e = 0; e < numEstudiantes; e++) {
+            System.out.println("\n--- Estudiante " + (e + 1) + " ---");
+            System.out.print("Ingrese el nombre del estudiante: ");
+            nombres[e] = sc.nextLine();
+
+            double[] notas = new double[5];
+            double suma = 0;
+
+            for (int i = 0; i < 5; i++) {
+                do {
+                    System.out.print("Ingrese nota " + (i + 1) + " (0 a 10): ");
+                    notas[i] = sc.nextDouble();
+                    if (notas[i] < 0 || notas[i] > 10) {
+                        System.out.println("Nota inválida. Debe estar entre 0 y 10.");
+                    }
+                } while (notas[i] < 0 || notas[i] > 10);
+                suma += notas[i];
+            }
+            sc.nextLine(); // limpiar buffer
+
+            todasNotas[e] = notas;
+            promedios[e] = suma / 5.0;
+        }
+
+        notasRegistradas = true;
+        System.out.println("\nRegistro de notas completado.");
+    }
+
 }
