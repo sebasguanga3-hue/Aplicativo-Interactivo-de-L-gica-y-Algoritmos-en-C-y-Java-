@@ -53,4 +53,51 @@ public class EvaluacionApp {
 
         } while (opcion != 4);
     }
+
+    // Parte 2 — Operaciones matemáticas
+    public static void operacionesBasicas() {
+        double a, b;
+        char operacion;
+
+        System.out.print("Ingrese el primer número: ");
+        a = sc.nextDouble();
+        System.out.print("Ingrese el segundo número: ");
+        b = sc.nextDouble();
+        System.out.print("Ingrese la operación (+,-,*,/): ");
+        operacion = sc.next().charAt(0);
+
+        double resultado;
+        switch (operacion) {
+            case '+':
+                resultado = a + b;
+                System.out.println("Resultado: " + resultado);
+                operacionGuardar = a + " + " + b + " = " + resultado;
+                break;
+            case '-':
+                resultado = a - b;
+                System.out.println("Resultado: " + resultado);
+                operacionGuardar = a + " - " + b + " = " + resultado;
+                break;
+            case '*':
+                resultado = a * b;
+                System.out.println("Resultado: " + resultado);
+                operacionGuardar = a + " * " + b + " = " + resultado;
+                break;
+            case '/':
+                if (b != 0) {
+                    resultado = a / b;
+                    System.out.println("Resultado: " + resultado);
+                    operacionGuardar = a + " / " + b + " = " + resultado;
+                } else {
+                    System.out.println("Error: División entre cero.");
+                    operacionGuardar = "Intento de división entre cero: " + a + " / " + b;
+                }
+                break;
+            default:
+                System.out.println("Operación no válida.");
+                operacionGuardar = "Operación inválida";
+        }
+
+        operacionRealizada = true;
+    }
 }
